@@ -1,0 +1,62 @@
+@ServiceHub.Api_HostAddress = http://localhost:5199/
+
+### POST para criar usuário
+
+POST http://localhost:5199/v1/usuario/criar
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "email": "joao.silva@example.com",
+  "telefone": "11987654321",
+  "endereco": "Rua das Flores",
+  "bairro": "Jardim Primavera",
+  "numero": "123",
+  "cep": "12345678",
+  "id_cidade": "55211a75-8f87-4c83-b5c7-ee42b344cb49",
+  "senha": "120805Maycon#"
+}
+
+###
+
+POST http://localhost:5199/v1/cidade/criar
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nome": "Ribeirão Preto",
+  "uf": "SP",
+  "cep": "14000001",
+  "ibge": "3543402"
+}
+
+###
+
+POST http://localhost:5199/v1/auth/logar
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "joao.silva@example.com",
+  "senha": "120805Maycon#"
+}
+
+###
+
+POST http://localhost:5199/v1/empresa/criar
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nome": "Tech Solutions LTDA",
+  "cnpj": "12345678000190",
+  "telefone": "16998765432",
+  "endereco": "Rua das Flores",
+  "bairro": "Centro",
+  "numero": "120",
+  "id_Cidade": "55211a75-8f87-4c83-b5c7-ee42b344cb49",
+  "cep": "04567890"
+}
+
+
