@@ -15,9 +15,11 @@ public static class AuthEndpoint
             var result = await sender.Send(command);
             return result.Success ? Results.Ok(result) : Results.BadRequest(result);
         });
-
+        
         return group;
     }
+    
+    
     
     
 }

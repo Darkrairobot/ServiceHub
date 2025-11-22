@@ -9,20 +9,17 @@ public class EmpresaMap : IEntityTypeConfiguration<Empresa>
 
     public void Configure(EntityTypeBuilder<Empresa> builder)
     {
-        // Nome da tabela
-        builder.ToTable("Empresa");
 
         // Chave primária
         builder.HasKey(e => e.Id);
 
         // Propriedades
         builder.Property(e => e.Id)
-            .IsRequired()
             .HasMaxLength(36);
         
         builder.Property(e => e.Id_Cidade).IsRequired().HasMaxLength(36);
         
-        builder.Property(e => e.Id_Usuario).IsRequired().HasMaxLength(450);
+        builder.Property(e => e.Id_Usuario).IsRequired().HasMaxLength(36);
 
         builder.Property(e => e.Nome)
             .IsRequired()
@@ -36,13 +33,16 @@ public class EmpresaMap : IEntityTypeConfiguration<Empresa>
             .IsRequired().HasMaxLength(14);
 
         builder.Property(e => e.Endereco)
+            .HasMaxLength(200);
+        
+        builder.Property(c => c.Complemento)
             .HasMaxLength(150);
 
         builder.Property(e => e.Bairro)
-            .HasMaxLength(60);
+            .HasMaxLength(100);
 
-        builder.Property(e => e.Numero)
-            .IsRequired();
+        builder.Property(c => c.Numero)
+            .HasMaxLength(10).IsRequired();
 
         builder.Property(e => e.Cep)
             .IsRequired().HasMaxLength(8);

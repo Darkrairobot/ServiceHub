@@ -15,7 +15,9 @@ public static class UsuarioEndpoint
             var result = await sender.Send(command);
 
             return result.Success ? Results.Ok() : Results.BadRequest(result);
-        });
+        }).WithDescription("Criar usuario");
+
+        group.RequireAuthorization();
         
         return group;
     }

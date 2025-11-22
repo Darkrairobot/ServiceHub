@@ -19,14 +19,13 @@ public class TokenService
         _configuration = configuration;
     }
     
-    public async Task<string> GerarToken(string id, string email, string nome)
+    public async Task<string> GerarToken(ApplicationUser usuario)
     {
-        
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, nome),
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.NameIdentifier, id)
+            new Claim(ClaimTypes.Name, usuario.Name),
+            new Claim(ClaimTypes.Email, usuario.Email),
+            new Claim(ClaimTypes.NameIdentifier, usuario.Id)
         };
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -35,7 +34,9 @@ public class TokenService
         var token = new JwtSecurityToken(
             claims: claims, 
             expires: DateTime.Now.AddMinutes(30), 
-            signingCredentials: credentials
+            signingCredentials: credentials,
+            issuer: "ServiceHub.Api",
+            audience: "ServiceHub.Api"
             );
 
         return new JwtSecurityTokenHandler().WriteToken(token);

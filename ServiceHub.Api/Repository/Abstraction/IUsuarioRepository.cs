@@ -1,15 +1,14 @@
 ﻿using ServiceHub.Api.Domain.Entities;
+using ServiceHub.Api.Infrestructure.Entity;
 
 namespace ServiceHub.Api.Domain.Repository;
 
 public interface IUsuarioRepository
 {
-    Task<Usuario?> EncontrarUsuarioAsync(string id);
-    Task<Usuario?> EncontrarUsuarioPeloEmailAsync(string email);
     
+    Task<ApplicationUser?> EncontrarUsuarioPeloIdAsync(string id);
     Task<bool> UsuarioExisteAsync(string email);
-        
-    Task CriarUsuarioAsync(Usuario usuario, string senha);
-    Task AtualizarUsuarioAsync(Usuario usuario);
-    Task RemoverUsuarioAsync(string id);
+    Task CriarUsuarioAsync(ApplicationUser usuario, string senha);
+    Task AtualizarUsuarioAsync(ApplicationUser usuario);
+    Task RemoverUsuarioAsync(ApplicationUser usuario);
 }

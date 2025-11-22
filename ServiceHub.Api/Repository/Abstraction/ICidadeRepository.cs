@@ -4,10 +4,9 @@ namespace ServiceHub.Api.Domain.Repository;
 
 public interface ICidadeRepository
 {
-
-    Task<Cidade?> EncontrarCidadePeloIdAsync(string id);
     
-    Task<Cidade?> EncontrarCidadePeloNomeAsync(string nome);
+    Task<Cidade? > EncontrarCidadePeloIdAsync(string id);
+    Task<List<Cidade>> EncontrarCidadeAsync(string? nome, string? ibge, string? uf, int  pagina, int tamanhoPagina);
     
     Task<bool> ExisteCidadeAsync(string ibge);
     
@@ -15,6 +14,6 @@ public interface ICidadeRepository
     
     Task AtualizarCidadeAsync(Cidade cidade);
     
-    Task RemoverCidadeAsync(string id);
+    Task RemoverCidadeAsync(Cidade cidade);
 
 }

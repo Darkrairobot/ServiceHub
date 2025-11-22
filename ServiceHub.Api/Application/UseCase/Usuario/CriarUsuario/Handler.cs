@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using ServiceHub.Api.Domain.Common;
 using ServiceHub.Api.Domain.Repository;
+using ServiceHub.Api.Infrestructure.Entity;
 
 namespace ServiceHub.Api.Application.UseCase.Usuario.CriarUsuario;
 
@@ -25,7 +26,13 @@ public class Handler  : IRequestHandler<Command, Result>
 
         try
         {
-            await _repository.CriarUsuarioAsync(new Domain.Entities.Usuario(request.nome, request.email, request.telefone, request.endereco, request.bairro, request.numero, request.cep, request.id_cidade), request.senha);
+            await _repository.CriarUsuarioAsync(new ApplicationUser()
+            {
+                Name = request.nome,
+                UserName = request.email,
+                Email = request.email,
+                PhoneNumber = request.telefone
+            }, request.senha);
             return Result.Ok();
         }
         catch (Exception ex)

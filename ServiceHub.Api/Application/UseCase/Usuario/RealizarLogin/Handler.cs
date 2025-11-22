@@ -13,12 +13,14 @@ public class Handler : IRequestHandler<Command, Result<Response>>
     private readonly TokenService _tokenService;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public Handler(TokenService tokenService,  IUsuarioRepository usuarioRepository,  SignInManager<ApplicationUser> signInManager)
+    public Handler(TokenService tokenService,  IUsuarioRepository usuarioRepository,  SignInManager<ApplicationUser> signInManager,  UserManager<ApplicationUser> userManager)
     {
         _tokenService = tokenService;
         _usuarioRepository = usuarioRepository;
         _signInManager = signInManager;
+        _userManager = userManager;
     }
     
     public async Task<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
@@ -28,14 +30,14 @@ public class Handler : IRequestHandler<Command, Result<Response>>
             if (!await _usuarioRepository.UsuarioExisteAsync(request.email))
                 return Result.Fail<Response>("E401", "Usuário não existe");
 
-            var usuario = await _usuarioRepository.EncontrarUsuarioPeloEmailAsync(request.email);
-
+            var usuario = await _userManager.FindByEmailAsync(request.email);
+            
             var result =
-                await _signInManager.PasswordSignInAsync(request.email, request.senha, false, lockoutOnFailure: false);
+                await _userManager.CheckPasswordAsync(usuario, request.senha);
 
-            if (!result.Succeeded) return Result.Fail<Response>("E402", "Email ou senha incorreto");
+            if (!result) return Result.Fail<Response>("E402", "Email ou senha incorreto");
 
-            var token = await _tokenService.GerarToken(usuario.Id, usuario.Email, usuario.Nome);
+            var token = await _tokenService.GerarToken(usuario);
 
             return Result.Ok<Response>(new Response(token));
         }

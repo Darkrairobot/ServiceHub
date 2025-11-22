@@ -12,8 +12,8 @@ using ServiceHub.Api.Infrestructure;
 namespace ServiceHub.Api.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251109053339_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251120235906_AjusteCliente2")]
+    partial class AjusteCliente2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,7 +93,7 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.HasKey("Id");
 
@@ -115,7 +115,7 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -127,7 +127,7 @@ namespace ServiceHub.Api.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -142,7 +142,7 @@ namespace ServiceHub.Api.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -184,6 +184,11 @@ namespace ServiceHub.Api.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 
+                    b.Property<string>("Id_Usuario")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -199,10 +204,12 @@ namespace ServiceHub.Api.Migrations
                     b.HasIndex("Ibge")
                         .IsUnique();
 
-                    b.ToTable("Cidade", (string)null);
+                    b.HasIndex("Id_Usuario");
+
+                    b.ToTable("Cidade");
                 });
 
-            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Empresa", b =>
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Cliente", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
@@ -210,15 +217,20 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<string>("Bairro")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Cep")
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<string>("Cnpj")
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Cpf_cnpj")
                         .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
@@ -233,10 +245,15 @@ namespace ServiceHub.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Endereco")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Id_Cidade")
                         .IsRequired()
@@ -245,8 +262,85 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<string>("Id_Usuario")
                         .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("Id_Cidade");
+
+                    b.HasIndex("Id_Usuario");
+
+                    b.ToTable("Cliente");
+                });
+
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Empresa", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Cnpj")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("DataAlteracao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Id_Cidade")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Id_Usuario")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -255,7 +349,8 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -271,24 +366,14 @@ namespace ServiceHub.Api.Migrations
 
                     b.HasIndex("Id_Usuario");
 
-                    b.ToTable("Empresa", (string)null);
+                    b.ToTable("Empresa");
                 });
 
-            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Usuario", b =>
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Servico", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Bairro")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Cep")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("DataAlteracao")
                         .ValueGeneratedOnAdd()
@@ -300,17 +385,12 @@ namespace ServiceHub.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Id_Cidade")
+                    b.Property<string>("Id_Usuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(36)");
 
@@ -319,30 +399,96 @@ namespace ServiceHub.Api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id_Usuario");
+
+                    b.ToTable("Servico");
+                });
+
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Venda", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("DataAlteracao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Id_Cidade")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Id_Cliente")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Id_Servico")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("Id_Usuario")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("Id_Cidade");
 
-                    b.ToTable("Usuario", (string)null);
+                    b.HasIndex("Id_Cliente");
+
+                    b.HasIndex("Id_Servico");
+
+                    b.HasIndex("Id_Usuario");
+
+                    b.ToTable("Venda");
                 });
 
             modelBuilder.Entity("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -363,6 +509,11 @@ namespace ServiceHub.Api.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -455,7 +606,18 @@ namespace ServiceHub.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Empresa", b =>
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Cidade", b =>
+                {
+                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("Id_Usuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Cliente", b =>
                 {
                     b.HasOne("ServiceHub.Api.Domain.Entities.Cidade", "Cidade")
                         .WithMany()
@@ -463,7 +625,7 @@ namespace ServiceHub.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ServiceHub.Api.Domain.Entities.Usuario", "Usuario")
+                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", "Usuario")
                         .WithMany()
                         .HasForeignKey("Id_Usuario")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -474,21 +636,69 @@ namespace ServiceHub.Api.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Usuario", b =>
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Empresa", b =>
                 {
-                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", null)
-                        .WithOne()
-                        .HasForeignKey("ServiceHub.Api.Domain.Entities.Usuario", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ServiceHub.Api.Domain.Entities.Cidade", "Cidade")
                         .WithMany()
                         .HasForeignKey("Id_Cidade")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("Id_Usuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Cidade");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Servico", b =>
+                {
+                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("Id_Usuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ServiceHub.Api.Domain.Entities.Venda", b =>
+                {
+                    b.HasOne("ServiceHub.Api.Domain.Entities.Cidade", "Cidade")
+                        .WithMany()
+                        .HasForeignKey("Id_Cidade")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ServiceHub.Api.Domain.Entities.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("Id_Cliente")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ServiceHub.Api.Domain.Entities.Servico", "Servico")
+                        .WithMany()
+                        .HasForeignKey("Id_Servico")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ServiceHub.Api.Infrestructure.Entity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("Id_Usuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cidade");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Servico");
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

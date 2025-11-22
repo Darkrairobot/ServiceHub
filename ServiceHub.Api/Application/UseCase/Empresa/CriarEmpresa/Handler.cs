@@ -28,7 +28,7 @@ public class Handler : IRequestHandler<Command, Result>
             if (await _repository.EmpresaExisteAsync(request.cnpj))
                 return Result.Fail("E301", "Empresa com esse cnpj já existe");
             
-            await _repository.CriarEmpresaAsync(new Domain.Entities.Empresa(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, request.nome,  request.cnpj, request.telefone, request.endereco, request.bairro, request.numero, request.id_cidade, request.cep));
+            await _repository.CriarEmpresaAsync(new Domain.Entities.Empresa(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, request.nome,  request.cnpj, request.telefone, request.endereco, request.complemento, request.bairro, request.numero, request.id_cidade, request.cep));
             
             return Result.Ok();
         }

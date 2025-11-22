@@ -12,9 +12,12 @@ public class Context : IdentityDbContext<ApplicationUser>
         
     }
     
-    public DbSet<Usuario> Usuario { get; set; }
     public DbSet<Empresa> Empresa { get; set; }
     public DbSet<Cidade> Cidade { get; set; }
+    public DbSet<Cliente> Cliente { get; set; }
+    public DbSet<Servico> Servico { get; set; }
+    
+    public DbSet<Venda> Venda { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

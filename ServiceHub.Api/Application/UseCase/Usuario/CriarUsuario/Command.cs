@@ -4,4 +4,4 @@ using ServiceHub.Api.Domain.Entities;
 
 namespace ServiceHub.Api.Application.UseCase.Usuario.CriarUsuario;
 
-public record Command(string nome, string email, string telefone, string endereco, string bairro, string numero, string cep, string id_cidade, string senha) : IRequest<Result>;
+public record Command(string nome, string email, string telefone, string senha) : IRequest<Result>;

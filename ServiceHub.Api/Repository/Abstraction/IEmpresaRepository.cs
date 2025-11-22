@@ -7,7 +7,7 @@ public interface IEmpresaRepository
     
     Task<Empresa?> EncontrarEmpresaPeloIdAsync(string id);
     
-    Task<Empresa?> EncontrarEmpresaPeloCnpjAsync(string cnpj);
+    Task<List<Empresa>> EncontrarEmpresaAsync(string? nome, string? cnpj, string? telefone, int pagina, int tamanhoPagina);
     
     Task<bool> EmpresaExisteAsync(string cnpj);
     
@@ -15,6 +15,6 @@ public interface IEmpresaRepository
     
     Task AtualizarEmpresaAsync(Empresa empresa);
     
-    Task DeletarEmpresaAsync(string id);
+    Task DeletarEmpresaAsync(Empresa empresa);
     
 }

@@ -1,22 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServiceHub.Api.Domain.Entities;
+using ServiceHub.Api.Infrestructure.Entity;
 
 namespace ServiceHub.Api.Infrestructure.EntitiesMapping;
 
 public class CidadeMap : IEntityTypeConfiguration<Cidade>
 {
-
     public void Configure(EntityTypeBuilder<Cidade> builder)
     {
-        
-        builder.ToTable("Cidade");
 
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Id)
-            .IsRequired()
             .HasMaxLength(36);
+        
+        builder.Property(c => c.Id_Usuario).HasMaxLength(36).IsRequired();
+        
+        builder.HasOne(c => c.Usuario).WithMany().HasForeignKey(c => c.Id_Usuario).IsRequired();
 
         builder.Property(c => c.Nome)
             .IsRequired()

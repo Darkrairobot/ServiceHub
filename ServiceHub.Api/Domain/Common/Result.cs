@@ -1,6 +1,8 @@
-﻿namespace ServiceHub.Api.Domain.Common;
+﻿using MediatR;
 
-public class Result
+namespace ServiceHub.Api.Domain.Common;
+
+public class Result : IRequest
 {
     public bool Success { get; set; }
     

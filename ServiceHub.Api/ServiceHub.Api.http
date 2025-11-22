@@ -8,13 +8,8 @@ Content-Type: application/json
 
 {
   "nome": "João da Silva",
-  "email": "joao.silva@example.com",
+  "email": "joao.sexo@example.com",
   "telefone": "11987654321",
-  "endereco": "Rua das Flores",
-  "bairro": "Jardim Primavera",
-  "numero": "123",
-  "cep": "12345678",
-  "id_cidade": "55211a75-8f87-4c83-b5c7-ee42b344cb49",
   "senha": "120805Maycon#"
 }
 
@@ -28,7 +23,7 @@ Content-Type: application/json
   "nome": "Ribeirão Preto",
   "uf": "SP",
   "cep": "14000001",
-  "ibge": "3543402"
+  "ibge": "3543408"
 }
 
 ###
@@ -38,7 +33,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "joao.silva@example.com",
+  "email": "joao.sexo@example.com",
   "senha": "120805Maycon#"
 }
 

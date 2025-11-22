@@ -12,67 +12,37 @@ namespace ServiceHub.Api.Repository;
 public class UsuarioRepository : IUsuarioRepository
 {
     
-    private readonly Context _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UsuarioRepository(Context context,  UserManager<ApplicationUser> userManager)
+    public UsuarioRepository(UserManager<ApplicationUser> userManager)
     {
-        _context = context;
         _userManager = userManager;
     }
-    
-    public Task<Usuario?> EncontrarUsuarioAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
 
-    public async Task<Usuario?> EncontrarUsuarioPeloEmailAsync(string email)
+    public async Task<ApplicationUser?> EncontrarUsuarioPeloIdAsync(string id)
     {
-        return await _context.Usuario.FirstOrDefaultAsync(u => u.Email == email);
+        return await _userManager.FindByIdAsync(id);
     }
 
     public async Task<bool> UsuarioExisteAsync(string email)
     {
-        var usuario = _context.Usuario.FirstOrDefault(u => u.Email == email);
-        return usuario is not null;
+        var usuario = await _userManager.FindByEmailAsync(email);
+        return usuario != null;
     }
 
-    public async Task CriarUsuarioAsync(Usuario usuario, string senha)
+    public async Task CriarUsuarioAsync(ApplicationUser usuario, string senha)
     {
-        
-        await using var transaction = await _context.Database.BeginTransactionAsync();
-        
-        try
-        {
-            var result = await _userManager.CreateAsync(new ApplicationUser
-            {
-                Id = usuario.Id,
-                UserName = usuario.Email,
-                Email = usuario.Email,
-                PhoneNumber = usuario.Telefone
-            }, senha);
-            
-            if(!result.Succeeded) throw new ValidationException(result.Errors.First().Description);
-            
-            await _context.Usuario.AddAsync(usuario);
-            await _context.SaveChangesAsync();
-            
-            await transaction.CommitAsync();
-        }
-        catch (Exception ex)
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
+        await _userManager.CreateAsync(usuario, senha);
     }
 
-    public Task AtualizarUsuarioAsync(Usuario usuario)
+    public async Task AtualizarUsuarioAsync(ApplicationUser usuario)
     {
-        throw new NotImplementedException();
+        await  _userManager.UpdateAsync(usuario);
     }
+    
 
-    public Task RemoverUsuarioAsync(string id)
+    public async Task RemoverUsuarioAsync(ApplicationUser usuario)
     {
-        throw new NotImplementedException();
+        await _userManager.DeleteAsync(usuario);
     }
 }
