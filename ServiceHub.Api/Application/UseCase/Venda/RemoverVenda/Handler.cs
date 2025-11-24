@@ -31,7 +31,7 @@ public class Handler : IRequestHandler<Command, Result>
         }
         catch (Exception ex)
         {
-            return Result.Fail("E399", $"Houve um erro ao remover venda {ex.Message}");
+            return Result.Fail("E399", $"Houve um erro ao remover venda {ex.InnerException.Message}");
         }
     }
 }

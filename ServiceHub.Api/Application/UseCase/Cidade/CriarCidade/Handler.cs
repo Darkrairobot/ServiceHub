@@ -26,7 +26,23 @@ public class Handler : IRequestHandler<Command,Result>
             
             if (await _repository.ExisteCidadeAsync(command.ibge)) return Result.Fail("E201", "Já existe uma cidade com esse código Ibge");
 
-            _repository.CriarCidadeAsync(new Domain.Entities.Cidade(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, command.nome, command.uf, command.cep,
+            if (string.IsNullOrEmpty(command.nome))
+                return Result.Fail("E207", "Nome da Cidade não pode ser nulo");
+            
+            if (string.IsNullOrEmpty(command.uf))
+                return Result.Fail("E208", "UF da Cidade não pode ser nulo");
+            
+            if(command.uf.Length != 2) 
+                return Result.Fail("E211", "UF da Cidade deve ter 2 caracteres");
+            
+            
+            if (string.IsNullOrEmpty(command.cep))
+                return Result.Fail("E209", "Cep da Cidade não pode ser nulo");
+            
+            if (string.IsNullOrEmpty(command.ibge))
+                return Result.Fail("E210", "Código IBGE da Cidade não pode ser nulo");
+            
+            await _repository.CriarCidadeAsync(new Domain.Entities.Cidade(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, command.nome, command.uf, command.cep,
                 command.ibge));
             
             return Result.Ok();
@@ -34,7 +50,7 @@ public class Handler : IRequestHandler<Command,Result>
         }
         catch (Exception ex)
         {
-               return Result.Fail("E299", $"Houve um erro ao criar o Cidade: \n{ex.Message}");
+               return Result.Fail("E299", $"Houve um erro ao criar o Cidade: \n{ex.InnerException.Message}");
         }
     }
     

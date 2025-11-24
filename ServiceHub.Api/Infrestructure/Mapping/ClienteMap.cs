@@ -66,8 +66,7 @@ public class ClienteMap : IEntityTypeConfiguration<Cliente>
             .IsRequired().HasDefaultValueSql("GETDATE()");
 
         // Índices recomendados
-        builder.HasIndex(c => c.Email)
-            .IsUnique(false);
+        builder.HasIndex(c => c.Email);
 
         builder.HasIndex(c => c.Id_Usuario);
         

@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-
+using ServiceHub.Api.Application.UseCase.Cliente.AtualizarCliente;
 using CriarClienteCommand = ServiceHub.Api.Application.UseCase.Cliente.CriarCliente.Command;
 using AtualizarClienteCommand = ServiceHub.Api.Application.UseCase.Cliente.AtualizarCliente.Command;
 using RemoverClienteCommand = ServiceHub.Api.Application.UseCase.Cliente.RemoverCliente.Command;
+using BuscarClienteQuery = ServiceHub.Api.Application.UseCase.Cliente.BuscarCliente.Query;
 
 
 namespace ServiceHub.Api.Endpoints;
@@ -20,10 +21,10 @@ public static class ClienteEndpoint
             return result.Success ? Results.Ok() : Results.BadRequest(result);
         }).WithDescription("Criar Cliente");
         
-        group.MapPatch("atualizar", async (AtualizarClienteCommand command, ISender sender) =>
+        group.MapPatch("atualizar/{id}", async (string id, Request request, ISender sender) =>
         {
             
-            var result = await sender.Send(command);
+            var result = await sender.Send(new AtualizarClienteCommand(id,  request.nome, request.cpf_cnpj, request.email, request.telefone, request.endereco, request.complemento, request.numero, request.cep, request.bairro, request.id_cidade));
             return result.Success ? Results.Ok() : Results.BadRequest(result);
             
         }).WithDescription("Atualizar Cliente");
@@ -33,6 +34,12 @@ public static class ClienteEndpoint
             var result = await sender.Send(new RemoverClienteCommand(id));
             return result.Success ? Results.Ok() : Results.BadRequest(result);
         }).WithDescription("Remover Cliente");
+
+        group.MapGet("buscar", async ([AsParameters] BuscarClienteQuery query, ISender sender) =>
+        {
+            var result = await sender.Send(query);
+            return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+        }).WithDescription("Buscar Clientes");
 
         group.RequireAuthorization();
         

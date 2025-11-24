@@ -9,7 +9,7 @@ public interface IServicoRepository
     
     Task CriarServicoAsync(Servico servico);
 
-    Task<List<Servico>> EncontrarServicoAsync(string id_usuario, string? nome,  string? descricao, string? valor, int pagina = 1,  int tamanhoPagina = 10);
+    Task<List<Servico>> EncontrarServicoAsync(int pagina = 1,  int tamanhoPagina = 10);
     
     Task AtualizarServicoAsync(Servico servico);
     

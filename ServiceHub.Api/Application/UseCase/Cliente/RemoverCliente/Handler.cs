@@ -30,7 +30,7 @@ public class Handler : IRequestHandler<Command, Result>
         }
         catch (Exception ex)
         {
-            return Result.Fail("E499", $"Houve um erro ao remover cliente {ex.Message}");
+            return Result.Fail("E499", $"Houve um erro ao remover cliente {ex.InnerException.Message}");
         }
     }
 }

@@ -32,7 +32,8 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task CriarUsuarioAsync(ApplicationUser usuario, string senha)
     {
-        await _userManager.CreateAsync(usuario, senha);
+        var result = await _userManager.CreateAsync(usuario, senha);
+        if(!result.Succeeded) throw new Exception(result.Errors.First().Description);
     }
 
     public async Task AtualizarUsuarioAsync(ApplicationUser usuario)

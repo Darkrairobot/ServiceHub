@@ -9,7 +9,7 @@ public interface IClienteRepository
     
     Task<bool> ClienteExisteAsync(string cpf_cnpj);
     
-    Task<List<Cliente>> EncontrarClienteAsync(string? nome, string? email, string? telefone, int pagina = 1,  int tamanhoPagina = 10);
+    Task<List<Cliente>> EncontrarClienteAsync(int pagina = 1,  int tamanhoPagina = 10);
     
     Task CriarClienteAsync(Cliente cliente);
     

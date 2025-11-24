@@ -39,7 +39,7 @@ public class CidadeMap : IEntityTypeConfiguration<Cidade>
         builder.Property(c => c.DataAlteracao)
             .IsRequired().HasDefaultValueSql("GETDATE()");
         
-        builder.HasIndex(c => c.Ibge).IsUnique();
+        builder.HasIndex(c => c.Ibge);
         
     }
     

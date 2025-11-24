@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using ServiceHub.Api.Domain.Common;
 using ServiceHub.Api.Domain.Entities;
 

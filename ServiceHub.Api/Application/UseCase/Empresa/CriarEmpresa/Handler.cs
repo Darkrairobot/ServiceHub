@@ -20,6 +20,25 @@ public class Handler : IRequestHandler<Command, Result>
     
     public async Task<Result> Handle(Command request,CancellationToken cancellationToken = default(CancellationToken))
     {
+        
+        if(string.IsNullOrEmpty(request.nome)) return  Result.Fail("E307", "Nome da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.cnpj)) return  Result.Fail("E308", "CNPJ da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.telefone)) return  Result.Fail("E309", "Telefone da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.endereco)) return  Result.Fail("E311", "Endereco da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.complemento)) return  Result.Fail("E312", "Complemento da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.numero)) return  Result.Fail("E313", "Numero da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.bairro)) return  Result.Fail("E314", "Bairro da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.cep)) return  Result.Fail("E315", "Cep da Empresa não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.id_cidade)) return  Result.Fail("E316", "Cidade da Empresa não pode ser nulo");
+        
         try
         {
             

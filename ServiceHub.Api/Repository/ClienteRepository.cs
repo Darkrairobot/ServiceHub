@@ -20,7 +20,10 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<Cliente?> EncontrarClientePeloIdAsync(string id)
     {
-        return await _context.Cliente.Where(c => c.Id_Usuario == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefaultAsync(c => c.Id == id);
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        return await _context.Cliente
+            .FirstOrDefaultAsync(c => c.Id_Usuario == userId && c.Id == id);
     }
 
     public async Task<bool> ClienteExisteAsync(string cpf_cnpj)
@@ -29,18 +32,12 @@ public class ClienteRepository : IClienteRepository
         return usuario != null;
     }
 
-    public async Task<List<Cliente>?> EncontrarClienteAsync(string? nome, string? email, string? telefone, int pagina = 1,
+    public async Task<List<Cliente>?> EncontrarClienteAsync(int pagina = 1,
         int tamanhoPagina = 10)
     {
         var query = _context.Cliente.AsQueryable();
         
         query = query.Where(c => c.Id_Usuario == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        
-        if(!string.IsNullOrEmpty(nome)) query = query.Where(c => c.Nome.Contains(nome));
-        
-        if(!string.IsNullOrEmpty(email)) query = query.Where(c => c.Email.Contains(email));
-        
-        if(!string.IsNullOrEmpty(telefone)) query = query.Where(c => c.Telefone.Contains(telefone));
         
         return await query.Skip((pagina - 1) * tamanhoPagina).Take(tamanhoPagina).ToListAsync();
         

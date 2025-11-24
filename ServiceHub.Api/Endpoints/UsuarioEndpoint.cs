@@ -16,8 +16,6 @@ public static class UsuarioEndpoint
 
             return result.Success ? Results.Ok() : Results.BadRequest(result);
         }).WithDescription("Criar usuario");
-
-        group.RequireAuthorization();
         
         return group;
     }

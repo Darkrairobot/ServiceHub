@@ -20,7 +20,10 @@ public class ServicoRepository :  IServicoRepository
 
     public async Task<Servico?> EncontrarServicoPeloIdAsync(string id)
     {
-        return await _context.Servico.Where(s => s.Id_Usuario == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefaultAsync(s => s.Id == id);
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        return await _context.Servico
+            .FirstOrDefaultAsync(s => s.Id_Usuario == userId && s.Id == id);
     }
 
     public async Task CriarServicoAsync(Servico servico)
@@ -29,17 +32,11 @@ public class ServicoRepository :  IServicoRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Servico>> EncontrarServicoAsync(string id_usuario, string? nome,  string? descricao, string? valor, int  pagina = 1,  int tamanhoPagina = 10)
+    public async Task<List<Servico>> EncontrarServicoAsync(int  pagina = 1,  int tamanhoPagina = 10)
     {
         var query = _context.Servico.AsQueryable();
         
         query = query.Where(c => c.Id_Usuario == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        
-        if(!string.IsNullOrEmpty(id_usuario)) query = query.Where(s => s.Id_Usuario == id_usuario);
-        if(!string.IsNullOrEmpty(nome)) query = query.Where(s => s.Nome == nome);
-        if(!string.IsNullOrEmpty(descricao)) query = query.Where(s => s.Descricao == descricao);
-
-        
         
         return await query.Skip((pagina - 1) * tamanhoPagina).Take(tamanhoPagina).ToListAsync();
 

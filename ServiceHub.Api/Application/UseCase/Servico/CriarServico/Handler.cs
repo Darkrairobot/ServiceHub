@@ -20,6 +20,11 @@ public class Handler : IRequestHandler<Command, Result>
 
     public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
     {
+        
+        if(string.IsNullOrEmpty(request.nome)) return  Result.Fail("E507", "Nome do Serviço não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.descricao)) return  Result.Fail("E508", "Descrição do Serviço não pode ser nulo");
+        
         try
         {
             await _repository.CriarServicoAsync(new Domain.Entities.Servico(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value, request.nome, request.descricao, request.valor));
@@ -27,7 +32,7 @@ public class Handler : IRequestHandler<Command, Result>
         }
         catch (Exception ex)
         {
-            return Result.Fail("E599", $"Houve um erro ao criar servico: {ex.Message}");
+            return Result.Fail("E599", $"Houve um erro ao criar servico: {ex.InnerException.Message}");
         }
     }
 }

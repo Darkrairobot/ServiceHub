@@ -30,7 +30,7 @@ public class Handler : IRequestHandler<Command, Result>
         }
         catch (Exception ex)
         {
-            return Result.Fail("E299", $"Houve um erro ao excluir o Cidade: {ex.Message}");
+            return Result.Fail("E299", $"Houve um erro ao excluir o Cidade: {ex.InnerException.Message}");
         }
     }
     

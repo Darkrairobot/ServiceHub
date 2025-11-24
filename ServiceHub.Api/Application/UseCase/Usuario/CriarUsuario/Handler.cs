@@ -24,6 +24,14 @@ public class Handler  : IRequestHandler<Command, Result>
         
         if(await _repository.UsuarioExisteAsync(request.email)) return Result.Fail("E101", "usuario já existe");
 
+        if(string.IsNullOrEmpty(request.nome)) return  Result.Fail("E107", "Nome do usuário não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.email)) return  Result.Fail("E108", "Email do usuário não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.telefone)) return  Result.Fail("E109", "Telefone do usuário não pode ser nulo");
+        
+        if(string.IsNullOrEmpty(request.senha)) return  Result.Fail("E110", "Senha do usuário não pode ser nulo");
+        
         try
         {
             await _repository.CriarUsuarioAsync(new ApplicationUser()
@@ -37,26 +45,12 @@ public class Handler  : IRequestHandler<Command, Result>
         }
         catch (Exception ex)
         {
-            switch (ex)
-            {
-                case ValidationException validationException:
+            
                     
-                    return Result.Fail("E102",  validationException.Message);
+                    return Result.Fail("E199",  $"Houve um erro inesperado ao criar usuário: \n{ex.Message}");
                     
-                    break;
-                
-                case DbUpdateException dbUpdateException:
-                    
-                    return Result.Fail("E103",  dbUpdateException.InnerException.Message);
-                    
-                    break;
-                
-                default:
-                    
-                    return Result.Fail("E199",  $"Houve um erro inesperado ao criar usuário: \n{ex.InnerException.Message} {ex.GetType()} {ex.StackTrace}");
-                    
-                    break;
-            }
+                  
+            
         }
     }
 
